@@ -12,9 +12,12 @@ DEFAULT_COMMANDS = (
     ('help', "Вывести справку"),
     ('new_game', "Создать игру"),
     ("join_game", "Присоединиться к игре"),
+    ("start_game", "Запустить игру"),
+    ("my_hand", "Мои карты"),
 )
 ADMIN_COMMANDS = (
     ("admin_panel", "Админка"),
+    ("admin_games", "Изменить игры")
 )
 ADMIN_ID = os.getenv('ADMIN_ID')
 ALLOWED_USERS = [int(ADMIN_ID)]

@@ -17,7 +17,9 @@ DEFAULT_COMMANDS = (
 )
 ADMIN_COMMANDS = (
     ("admin_panel", "Админка"),
-    ("admin_games", "Изменить игры")
+    ("admin_games", "Изменить игры"),
+    ("add_faction", "Создать фракцию"),
+    ("manage_factions", "Управление фракциями")
 )
 ADMIN_ID = os.getenv('ADMIN_ID')
 ALLOWED_USERS = [int(ADMIN_ID)]

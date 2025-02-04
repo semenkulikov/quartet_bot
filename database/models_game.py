@@ -19,6 +19,7 @@ class GameSession(Base):
     id = Column(Integer, primary_key=True, index=True)
     status = Column(Enum(GameStatus), default=GameStatus.waiting)
     current_turn = Column(String, nullable=True)  # Telegram user_id активного игрока
+    creator_id = Column(String, nullable=True)  # ID создателя игры (например, админа)
 
     # Связь с участниками игры
     players = relationship("PlayerGame", back_populates="game_session", cascade="all, delete-orphan")

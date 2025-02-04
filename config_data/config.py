@@ -9,7 +9,9 @@ else:
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 DEFAULT_COMMANDS = (
     ('start', "Запустить бота"),
-    ('help', "Вывести справку")
+    ('help', "Вывести справку"),
+    ('new_game', "Создать игру"),
+    ("join_game", "Присоединиться к игре"),
 )
 ADMIN_COMMANDS = (
     ("admin_panel", "Админка"),

@@ -1,1 +1,1 @@
-from . import inline_keyboards
+from . import accounts

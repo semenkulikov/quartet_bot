@@ -1,24 +1,27 @@
-from sqlalchemy import func, Column, Integer, String, DateTime, Float
+from sqlalchemy import Column, Integer, String, Boolean, Text
 from sqlalchemy.orm import declarative_base
-from datetime import datetime
-
 
 Base = declarative_base()
 
 
-class Product(Base):
-    __tablename__ = 'products'
+class User(Base):
+    __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column('name', String, nullable=False)
-    article = Column('article', Integer, unique=True, nullable=False)
-    price = Column('price', Float, nullable=False)
-    rating = Column('rating', Integer)
-    count = Column('count', Integer)
-    created_at = Column(DateTime(), default=datetime.now)
-    updated_at = Column(DateTime(), default=datetime.now, onupdate=datetime.now)
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(String, unique=True, nullable=False)  # Telegram ID
+    full_name = Column(String, nullable=False)
+    username = Column(String, nullable=False)
+    is_premium = Column(Boolean, nullable=True)
 
-    def __repr__(self):
-        return "<Product(name='{name}', article='{article}', price='{price}')>".format(
-            name=self.name, article=self.article, price=self.price)
 
+class Group(Base):
+    __tablename__ = 'groups'
+
+    id = Column(Integer, primary_key=True, index=True)
+    group_id = Column(String, unique=True, nullable=False)
+    title = Column(String, nullable=False)
+    description = Column(Text, nullable=True)
+    bio = Column(Text, nullable=True)
+    invite_link = Column(String, nullable=True)
+    location = Column(String, nullable=True)
+    username = Column(String, nullable=True)

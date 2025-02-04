@@ -1,44 +1,30 @@
-from config_data.config import DEFAULT_COMMANDS
-from aiogram import types
-from loader import bot, dp
+import os
 import asyncio
-import logging
-import sys
+from loader import bot, dp, app_logger
+from utils.set_bot_commands import set_default_commands
+from database.engine import engine
+from database.models import Base
+from config_data.config import ADMIN_ID
 import handlers
-from database.engine import create_db, session_maker
-from middlewares.db import DataBaseSession
 
+async def main():
+    # Создание таблиц в базе данных
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    app_logger.info("Подключение к базе данных...")
 
-async def on_startup(bot):
+    await set_default_commands()
+    app_logger.info("Загрузка базовых команд...")
 
-    run_param = False
-    if run_param:
-        # await drop_db()
-        pass
-    await create_db()
+    me = await bot.get_me()
+    app_logger.info(f"Бот @{me.username} запущен.")
 
+    try:
+        await bot.send_message(ADMIN_ID, "Бот запущен.")
+    except Exception as e:
+        app_logger.error(f"Ошибка при отправке сообщения администратору: {e}")
 
-async def on_shutdown(bot):
-    print('Бот прекратил работу!')
-
-
-async def main() -> None:
-    dp.include_routers(handlers.default_heandlers.start.router,
-                       handlers.default_heandlers.help.router,
-                       handlers.custom_heandlers.handlers.router,
-                       handlers.default_heandlers.echo.router,
-                       )
-    dp.startup.register(on_startup)
-    dp.shutdown.register(on_shutdown)
-    dp.update.middleware(DataBaseSession(session_pool=session_maker))
-    await bot.delete_webhook(drop_pending_updates=True)
-    # await bot.delete_my_commands(scope=types.BotCommandScopeAllPrivateChats())
-    await bot.set_my_commands(commands=DEFAULT_COMMANDS, scope=types.BotCommandScopeAllPrivateChats())
-    await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
-
+    await dp.start_polling(bot)
 
 if __name__ == '__main__':
-
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout,
-                        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s")
     asyncio.run(main())

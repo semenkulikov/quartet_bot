@@ -9,6 +9,7 @@ async def get_user_by_user_id(user_id: str):
         return result.scalars().first()
 
 async def create_user(user_id: str, full_name: str, username: str, is_premium: bool = None):
+    """ Создать объект пользователя """
     async with async_session() as session:
         user = User(user_id=user_id, full_name=full_name, username=username, is_premium=is_premium)
         session.add(user)

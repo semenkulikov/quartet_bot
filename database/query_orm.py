@@ -17,6 +17,7 @@ async def create_user(user_id: str, full_name: str, username: str, is_premium: b
         return user
 
 async def get_group_by_group_id(group_id: str):
+    """ Запросить Telegram группу по ее ID """
     async with async_session() as session:
         result = await session.execute(select(Group).where(Group.group_id == group_id))
         return result.scalars().first()

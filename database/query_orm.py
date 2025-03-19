@@ -40,6 +40,7 @@ async def create_group(group_id: str, title: str, description: str = None, bio: 
         return group
 
 async def get_all_users():
+    """ Функция для получения кверисета всех юзеров """
     async with async_session() as session:
         result = await session.execute(select(User))
         return result.scalars().all()

@@ -24,6 +24,7 @@ async def get_group_by_group_id(group_id: str):
 
 async def create_group(group_id: str, title: str, description: str = None, bio: str = None,
                        invite_link: str = None, location: str = None, username: str = None):
+    """ Функция для создания объекта группы """
     async with async_session() as session:
         group = Group(
             group_id=group_id,

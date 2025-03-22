@@ -46,6 +46,7 @@ async def get_all_users():
         return result.scalars().all()
 
 async def update_user_invoice(user_id: str, invoice_path: str):
+    """ Функция для обновления invoice path """
     async with async_session() as session:
         result = await session.execute(select(User).where(User.user_id == user_id))
         user = result.scalars().first()

@@ -5,6 +5,7 @@ Base = declarative_base()
 
 
 class User(Base):
+    """ Модель для объекта Пользователя """
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, index=True)
@@ -14,7 +15,8 @@ class User(Base):
     is_premium = Column(Boolean, nullable=True)
 
 
-class Group(Base):
+class Group(Base)
+    """ Модель для объекта группы """
     __tablename__ = 'groups'
 
     id = Column(Integer, primary_key=True, index=True)

@@ -7,6 +7,7 @@ from aiogram.filters import Command
 
 @dp.message(Command('start'))
 async def bot_start(message: types.Message):
+    """ Хендлер для обработки стартового сообщения """
     if message.chat.type == 'private':
         user = await get_user_by_user_id(str(message.from_user.id))
         if user is None:

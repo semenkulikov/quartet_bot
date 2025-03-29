@@ -7,6 +7,7 @@ from config_data.config import DEFAULT_COMMANDS, ADMIN_COMMANDS, ALLOWED_USERS
 
 @dp.message(Command('help'))
 async def bot_help(message: types.Message):
+    """ Хендлер для выдачи справки по боту """
     commands = [f"/{cmd} - {desc}" for cmd, desc in DEFAULT_COMMANDS]
     if int(message.from_user.id) in ALLOWED_USERS:
         commands.extend([f"/{cmd} - {desc}" for cmd, desc in ADMIN_COMMANDS])

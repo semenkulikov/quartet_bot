@@ -18,6 +18,7 @@ game_manager = GameManager()
 
 @dp.message(Command('admin_panel'))
 async def admin_panel(message: types.Message, state: FSMContext):
+    """ Хендлер для админ панели """
     if int(message.from_user.id) in ALLOWED_USERS:
         app_logger.info(f"Администратор @{message.from_user.username} вошел в админ панель.")
         markup = await users_markup()

@@ -29,6 +29,7 @@ async def admin_panel(message: types.Message, state: FSMContext):
 
 @dp.callback_query(StateFilter(AdminPanel.get_users))
 async def get_user(call: types.CallbackQuery, state: FSMContext):
+    """ Хендлер для управления юзерами """
     await call.answer()
     if call.data == "Выход":
         await call.message.answer("Вы успешно вышли из админ панели.")

@@ -15,7 +15,7 @@ class User(Base):
     is_premium = Column(Boolean, nullable=True)
 
 
-class Group(Base)
+class Group(Base):
     """ Модель для объекта группы """
     __tablename__ = 'groups'
 

@@ -1,29 +1,36 @@
 import os
-from dotenv import load_dotenv, find_dotenv
+from dotenv import find_dotenv, load_dotenv
 
 if not find_dotenv():
     exit('Переменные окружения не загружены, так как отсутствует файл .env')
 else:
     load_dotenv()
 
-BOT_TOKEN = os.getenv('BOT_TOKEN')
-DEFAULT_COMMANDS = (
-    ('start', "Запустить бота"),
-    ('help', "Вывести справку"),
-    ('new_game', "Создать игру"),
-    ("join_game", "Присоединиться к игре"),
-    ("start_game", "Запустить игру"),
-    ("my_hand", "Мои карты"),
-)
-ADMIN_COMMANDS = (
-    ("admin_panel", "Админка"),
-    ("admin_games", "Изменить игры"),
-    ("add_faction", "Создать фракцию"),
-    ("manage_factions", "Управление фракциями")
-)
-ADMIN_ID = os.getenv('ADMIN_ID')
-ALLOWED_USERS = [int(ADMIN_ID)]
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Токен бота
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-DATABASE_PATH = os.path.join(BASE_DIR, "database", "database.db")
-DATABASE_URL = f"sqlite+aiosqlite:///{DATABASE_PATH}"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# ID администраторов
+ADMIN_IDS = [
+    int(id) for id in os.getenv("ADMIN_IDS", "").split(",") if id
+]
+
+DEFAULT_COMMANDS = [
+    ("start", "Начать игру"),
+    ("help", "Помощь"),
+]
+
+ADMIN_COMMANDS = [
+    ("admin_panel", "Админ-панель"),
+]
+
+# Настройки базы данных
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///database.db")
+
+# Настройки логирования
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+LOG_FILE = "logs/bot.log"
+LOG_MAX_BYTES = 1024 * 1024  # 1 MB
+LOG_BACKUP_COUNT = 5

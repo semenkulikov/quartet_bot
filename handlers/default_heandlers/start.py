@@ -1,13 +1,14 @@
-from aiogram import types
-from loader import bot, dp, app_logger
-from config_data.config import ALLOWED_USERS, DEFAULT_COMMANDS, ADMIN_COMMANDS
-from database.query_orm import get_user_by_user_id, create_user, get_group_by_group_id, create_group
+from aiogram import Router, types
+from database.db import create_group, create_user, get_group_by_group_id, get_user_by_user_id
+from keyboards.reply.handlers_reply import get_game_keyboard
+from loader import bot, dp, logger
+from config_data.config import ADMIN_IDS, DEFAULT_COMMANDS, ADMIN_COMMANDS
 from aiogram.filters import Command
 
+router = Router()
 
-@dp.message(Command('start'))
+@router.message(Command('start'))
 async def bot_start(message: types.Message):
-    """ Хендлер для обработки стартового сообщения """
     if message.chat.type == 'private':
         user = await get_user_by_user_id(str(message.from_user.id))
         if user is None:
@@ -15,20 +16,23 @@ async def bot_start(message: types.Message):
                 user_id=str(message.from_user.id),
                 full_name=message.from_user.full_name,
                 username=message.from_user.username,
-                is_premium=getattr(message.from_user, 'is_premium', None)
+                is_premium=getattr(message.from_user, 'is_premium', None),
+                is_admin=int(message.from_user.id) in ADMIN_IDS
             )
         commands = [f"/{cmd} - {desc}" for cmd, desc in DEFAULT_COMMANDS]
-        if int(message.from_user.id) in ALLOWED_USERS:
+        if int(message.from_user.id) in ADMIN_IDS:
             commands.extend([f"/{cmd} - {desc}" for cmd, desc in ADMIN_COMMANDS])
             await message.answer(
                 f"Здравствуйте, {message.from_user.full_name}! Вы в списке администраторов бота. \n"
-                f"Вам доступны следующие команды:\n" + "\n".join(commands)
+                f"Вам доступны следующие команды:\n" + "\n".join(commands),
+                reply_markup=get_game_keyboard()
             )
         else:
-            app_logger.info(f"Новый пользователь: {message.from_user.full_name} — {message.from_user.username}")
+            logger.info(f"Новый пользователь: {message.from_user.full_name} — {message.from_user.username}")
             await message.answer(
                 f"Здравствуйте, {message.from_user.full_name}! Я — телеграм-бот. \n"
-                f"Вам доступны следующие команды:\n" + "\n".join(commands)
+                f"Вам доступны следующие команды:\n" + "\n".join(commands),
+                reply_markup=get_game_keyboard()
             )
     else:
         await message.answer(
@@ -53,6 +57,7 @@ async def bot_start(message: types.Message):
                 user_id=str(message.from_user.id),
                 full_name=message.from_user.full_name,
                 username=message.from_user.username,
-                is_premium=getattr(message.from_user, 'is_premium', None)
+                is_premium=getattr(message.from_user, 'is_premium', None),
+                is_admin=int(message.from_user.id) in ADMIN_IDS,
             )
-        app_logger.info(f"Новый пользователь: {message.from_user.full_name} — {message.from_user.username}")
+        logger.info(f"Новый пользователь: {message.from_user.full_name} — {message.from_user.username}")

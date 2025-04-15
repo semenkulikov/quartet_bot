@@ -7,29 +7,40 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.fsm.storage.memory import MemoryStorage
 from config_data.config import BOT_TOKEN, BASE_DIR
 
+# Настройка логирования
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Создаем директорию для логов, если её нет
+if not os.path.exists("logs"):
+    os.makedirs("logs")
+
+# Настраиваем файловый обработчик
+file_handler = RotatingFileHandler(
+    "logs/bot.log",
+    maxBytes=1024 * 1024,  # 1 MB
+    backupCount=5,
+    encoding="utf-8"
+)
+file_handler.setFormatter(
+    logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+)
+
+# Настраиваем консольный обработчик
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(
+    logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+)
+
+# Добавляем обработчики к логгеру
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+
+# Инициализация бота и диспетчера
 storage = MemoryStorage()
 bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode='HTML'))
 dp = Dispatcher(storage=storage)
-
-# Настройка логирования
-
-log_formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s - %(message)s')
-logs_path = os.path.join(BASE_DIR, "logs")
-
-if not os.path.exists(logs_path):
-    os.makedirs(logs_path)
-
-file_handler = RotatingFileHandler(
-    os.path.join(logs_path, "bot.log"),
-    mode='a', maxBytes=2*1024*1024, backupCount=1, encoding="utf8"
-)
-file_handler.setFormatter(log_formatter)
-file_handler.setLevel(logging.INFO)
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(log_formatter)
-stream_handler.setLevel(logging.INFO)
-
-app_logger = logging.getLogger("app_logger")
-app_logger.setLevel(logging.INFO)
-app_logger.addHandler(file_handler)
-app_logger.addHandler(stream_handler)

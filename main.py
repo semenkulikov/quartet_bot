@@ -1,30 +1,40 @@
-import os
 import asyncio
-from loader import bot, dp, app_logger
-from utils.set_bot_commands import set_default_commands
-from database.engine import engine
-from database.models import Base
-from config_data.config import ADMIN_ID
-import handlers
+from aiogram import Dispatcher
+from loader import dp, bot, logger
+from handlers.custom_heandlers import game_handlers, admin_handlers, game_process_handlers
+from handlers.default_heandlers import start, help, echo
+from database.init_db import init_db
+import logging
+from config_data.config import ADMIN_IDS
 
 async def main():
-    # Создание таблиц в базе данных
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    app_logger.info("Подключение к базе данных...")
-
-    await set_default_commands()
-    app_logger.info("Загрузка базовых команд...")
-
-    me = await bot.get_me()
-    app_logger.info(f"Бот @{me.username} запущен.")
-
+    """Запуск бота"""
     try:
-        await bot.send_message(ADMIN_ID, "Бот запущен.")
+        # Инициализация базы данных
+        await init_db()
+        logger.info("База данных инициализирована")
+        
+        # Регистрация роутеров
+        dp.include_router(start.router)
+        dp.include_router(help.router)
+        
+        dp.include_router(game_handlers.router)
+        dp.include_router(admin_handlers.router)
+        dp.include_router(game_process_handlers.router)
+
+        dp.include_router(echo.router)
+        # Запуск бота
+        
+        me = await bot.get_me()
+        logger.info(f"Бот @{me.username} запущен")
+        for admin_id in ADMIN_IDS:
+            await bot.send_message(admin_id, f"Бот @{me.username} запущен.")
+            logger.info(f"Администратору {admin_id} отправлено сообщение о запуске бота")
+        await dp.start_polling(bot)
+        
     except Exception as e:
-        app_logger.error(f"Ошибка при отправке сообщения администратору: {e}")
+        logger.error(f"Ошибка при запуске бота: {e}")
+        raise
 
-    await dp.start_polling(bot)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(main())

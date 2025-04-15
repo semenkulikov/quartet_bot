@@ -1,12 +1,67 @@
-from aiogram.types import ReplyKeyboardMarkup
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
+def get_game_keyboard() -> ReplyKeyboardMarkup:
+    """Основная клавиатура игры"""
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text="Создать игру"),
+                KeyboardButton(text="Присоединиться к игре")
+            ],
+            [
+                KeyboardButton(text="Мои карты"),
+                KeyboardButton(text="Правила игры")
+            ]
+        ],
+        resize_keyboard=True
+    )
+    return keyboard
 
-def handlers_reply() -> ReplyKeyboardMarkup:
-    """ Тестовая Reply клавиатура """
-    kb = ReplyKeyboardBuilder()
-    kb.button(text="Тестовая кнопка 1")
-    kb.button(text="Тестовая 2")
-    kb.button(text="Тестовая 3")
-    kb.adjust(3)
-    return kb.as_markup(resize_keyboard=True, input_field_placeholder="Выберите одну из кнопок")
+def get_admin_keyboard() -> ReplyKeyboardMarkup:
+    """Клавиатура админ-панели"""
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text="Управление фракциями"),
+                KeyboardButton(text="Управление играми")
+            ],
+            [
+                KeyboardButton(text="Назад")
+            ]
+        ],
+        resize_keyboard=True
+    )
+    return keyboard
+
+def get_faction_management_keyboard() -> ReplyKeyboardMarkup:
+    """Клавиатура управления фракциями"""
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text="Создать фракцию"),
+                KeyboardButton(text="Удалить фракцию")
+            ],
+            [
+                KeyboardButton(text="Список фракций"),
+                KeyboardButton(text="Назад")
+            ]
+        ],
+        resize_keyboard=True
+    )
+    return keyboard
+
+def get_game_management_keyboard() -> ReplyKeyboardMarkup:
+    """Клавиатура управления играми"""
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text="Список игр"),
+                KeyboardButton(text="Завершить игру")
+            ],
+            [
+                KeyboardButton(text="Назад")
+            ]
+        ],
+        resize_keyboard=True
+    )
+    return keyboard 

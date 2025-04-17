@@ -2,6 +2,7 @@ from aiogram.fsm.state import StatesGroup, State
 
 
 class AdminStates(StatesGroup):
+    """ Состояния для админ хендлеров """
     managing_factions = State()
     managing_games = State()
     creating_faction = State()

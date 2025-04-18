@@ -13,6 +13,7 @@ class GameStatus(enum.Enum):
         return self.value
 
 class User(Base):
+    """ Модель для пользователя """
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, index=True)

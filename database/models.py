@@ -27,6 +27,7 @@ class User(Base):
     games = relationship("GamePlayer", back_populates="user")
 
 class Faction(Base):
+    """  Модель для фракций """
     __tablename__ = 'factions'
     
     id = Column(Integer, primary_key=True, index=True)

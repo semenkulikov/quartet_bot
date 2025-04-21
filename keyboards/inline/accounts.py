@@ -4,6 +4,7 @@ from config_data.config import ADMIN_IDS
 from database.db import get_all_users
 
 async def users_markup() -> InlineKeyboardMarkup:
+    """ Клавиатура для отображения юзеров в админ панели """
     builder = InlineKeyboardBuilder()
     users = await get_all_users()
     for user in users:

@@ -5,6 +5,7 @@ import enum
 Base = declarative_base()
 
 class GameStatus(enum.Enum):
+    """ Класс для статусов игры """ 
     WAITING = "waiting"
     IN_PROGRESS = "in_progress"
     FINISHED = "finished"

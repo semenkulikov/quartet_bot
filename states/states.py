@@ -18,6 +18,7 @@ class AdminPanel(StatesGroup):
 
 
 class GameStates(StatesGroup):
+    """ States for game """
     waiting_for_players = State()
     in_game = State()
     requesting_card = State()

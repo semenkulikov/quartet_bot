@@ -13,6 +13,7 @@ class AdminStates(StatesGroup):
     ending_game = State()
 
 class AdminPanel(StatesGroup):
+    """ FSM states for admin panel """
     get_users = State()
 
 

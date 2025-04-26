@@ -15,6 +15,7 @@ async def main():
         logger.info("База данных инициализирована")
         
         # Регистрация роутеров
+
         dp.include_router(start.router)
         dp.include_router(help.router)
         
@@ -24,7 +25,7 @@ async def main():
 
         dp.include_router(echo.router)
         # Запуск бота
-        
+        # Получение рнформации о боте
         me = await bot.get_me()
         logger.info(f"Бот @{me.username} запущен")
         for admin_id in ADMIN_IDS:

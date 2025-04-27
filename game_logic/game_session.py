@@ -9,6 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class GameSession:
+    """  Класс для игровых сессий"""
     def __init__(self, game_id: int):
         self.game_id = game_id
         self.game: Optional[Game] = None

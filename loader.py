@@ -18,7 +18,7 @@ if not os.path.exists("logs"):
 # Настраиваем файловый обработчик
 file_handler = RotatingFileHandler(
     "logs/bot.log",
-    maxBytes=1024 * 1024,  # 1 MB
+    maxBytes=1024 * 1024,
     backupCount=5,
     encoding="utf-8"
 )

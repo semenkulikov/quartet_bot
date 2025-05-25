@@ -9,6 +9,7 @@ else:
 # Токен бота
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
+# Инициализируем базовую директорию проекта
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # ID администраторов

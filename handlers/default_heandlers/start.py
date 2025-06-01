@@ -9,6 +9,7 @@ router = Router()
 
 @router.message(Command('start'))
 async def bot_start(message: types.Message):
+    """ Хендлер для приема и обработки стартового сообщения. Регистрирует польщователя в базе данных """
     if message.chat.type == 'private':
         user = await get_user_by_user_id(str(message.from_user.id))
         if user is None:

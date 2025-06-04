@@ -7,6 +7,7 @@ from database.init_db import init_db
 import logging
 from config_data.config import ADMIN_IDS
 
+
 async def main():
     """Запуск бота"""
     try:
